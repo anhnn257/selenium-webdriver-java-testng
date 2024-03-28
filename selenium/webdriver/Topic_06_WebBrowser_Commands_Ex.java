@@ -3,6 +3,7 @@ package webdriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -17,7 +18,7 @@ public class Topic_06_WebBrowser_Commands_Ex {
 
     @BeforeClass
     public void BeforeClass(){
-        if (osName.contains("window")){
+        if (osName.contains("Window")){
             System.setProperty("webdriver.gecko.driver", projectPath + "\\browserDrivers\\geckodriver.exe");
         } else {
             System.setProperty("webdriver.gecko.driver", projectPath + "\\browserDrivers\\geckodriver");
@@ -42,10 +43,29 @@ public class Topic_06_WebBrowser_Commands_Ex {
         //B2: click vào element -> dùng hàm .click()
         driver.findElement(new By.ByXPath("//div[@class = 'footer']//a[@title = 'My Account']")).click();
 
+        String loginPageUrl = driver.getCurrentUrl();
+        //Step 03: Verify Url của login page = http://live.techpanda.org/index.php/customer/account/login/
+        //Phân tích:
+        //B1: lấy ra link của Login page
+        //có 2 cách lấy link Login page:
+        // + click vào My Account ở Header
+        // + click vào My Account ở footer -> dùng cách này do bên trên đã có sẵn kết quả
+        //B2: So sánh kết quả lấy ra ở b1 với đề bài
+        Assert.assertEquals(driver.getCurrentUrl(),"http://live.techpanda.org/index.php/customer/account/login/");
+
+        //Step 04: Click vào CREATE AN ACCOUNT button
+        //Tương tự Step 2
+        driver.findElement(By.xpath("//a[@title = 'Create an Account']")).click();
+
+        //Step 05: Verify url của Register Page = http://live.techpanda.org/index.php/customer/account/create/
+        //tương tự Step 03
+        Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/customer/account/create/");
+
     }
     @AfterClass
     public void afterClass() {
-        driver.quit();
+
+        //driver.quit();
     }
 
 }
